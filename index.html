@@ -1,1 +1,66 @@
-Hello World
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Silin Zhang's Web Map</title>
+	<meta charset="utf-8" />
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.css" />
+	<!--[if lte IE 8]><link rel="stylesheet" href="../dist/leaflet.ie.css" /><![endif]-->
+  <style type="text/css">
+	html, body, #map{
+	 height: 100%;
+	 width: 100%;
+	 margin: 0;
+	 padding: 0;
+	}
+	</style>
+
+</head>
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.js"></script>
+
+	<div id="map"></div>
+
+	<script>
+        var map = L.map('map');// CODE GOES HERE 
+        var stamenWaterURL = 'http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.png';
+        var stamenAttribution = 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3. 0</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://creativecommons.org/licenses/by-sa/3.0">CC BY SA</a>.';
+      	
+        var stamenLayer = new L.tileLayer(stamenWaterURL, {maxZoom: 18, attribution: stamenAttribution});
+        var openstreetUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+        var mapqueststreetUrl = 'http://otile{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.png';
+        var mapquestAerialUrl = 'http://otile{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg';
+        var zoomax = 19
+        var openstreet = new L.tileLayer(openstreetUrl, {maxZoom: zoomax, });
+        var mapstreet = new L.tileLayer(mapqueststreetUrl, {maxZoom: zoomax, subdomains:'1234'});
+        var mapaerial = new L.tileLayer(mapquestAerialUrl, {maxZoom: zoomax, subdomains:'1234'});
+        var baseLayers = { 
+		"Water Color": stamenLayer, 
+		"Open Street Map": openstreet, 
+		"Map Quest Street": mapstreet, 
+		"Map Quest Aerial": mapaerial 
+	}; 
+
+	var overlays = { 
+	}; 
+
+        map.addLayer(stamenLayer);
+        map.addLayer(openstreet);
+        map.addLayer(mapstreet);
+        map.addLayer(mapaerial);
+        L.control.layers(baseLayers, overlays).addTo(map);
+        map.on('click', function(e) {
+        var marker  = L.marker(e.latlng).addTo(map);
+        marker.bindPopup("<b>Hello world!</b><br>I am a popup at = " + e.latlng).openPopup();
+        //map.panTo(e.latlng);
+        
+	});
+        
+
+        map.setView([37.76, -122.46], 10);
+        
+	</script>
+</body>
+</html>
